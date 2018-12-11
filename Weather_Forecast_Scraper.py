@@ -5,6 +5,8 @@ from pandas.io.json import json_normalize
 import pandas as pd
 import datetime
 import time
+import civis
+import os
 
 #Zip code variable
 zips = ["02118", 
@@ -45,7 +47,7 @@ zips = ["02118",
 
 
 #Load API key (will probs need to change this to an environmental variable once we get a location down)
-akey = "090af7a626f8e3cb54930f4d77088780"
+akey = os.environ['API_KEY']
 
 #Create empty data frame to append everything to
 m_data = pd.DataFrame()
@@ -158,7 +160,7 @@ for i in zips:
             rn_nms[j] = 'rain.' + rn_nms[j]
         rn_weath.columns = rn_nms
     
-        g_data = pd.concat([fore_tm, main_parse, weath_parse, cld_parse, wind_parse, sn_weath, rn_weath], axis = 1, sort = False)
+        g_data = pd.concat([fore_tm, main_parse, weath_parse, cld_parse, wind_parse, sn_weath, rn_weath], axis = 1)
     
         #add the zip code
         g_data['zip'] = i
@@ -167,7 +169,7 @@ for i in zips:
         g_data['scrape_date'] = dt.strftime("%Y-%m-%d %H:%M")
     
         #append this to the original dummy data frame
-        m_data = m_data.append(g_data, sort=False)
+        m_data = m_data.append(g_data)
         print("Finished with forecast " + str(e+1) + " of " + str(len(drill)) + " --- Zip " + str((zips.index(i)+1)) + " of " + str(len(zips)))
     
     print("Finished with zip " + i + " --- " + str((zips.index(i)+1)) + " of " + str(len(zips)))
@@ -182,6 +184,5 @@ for i in zips:
     print("Sleeping for " + str(1) + " second...")
     time.sleep(1)
         
-        
-pprint(m_data)
-m_data.to_csv('weather_forecast_scrape.csv', index = False)
+
+civis.io.dataframe_to_civis(m_data, database="City of Boston", table = "sandbox.openweathermap_forecast", existing_table_rows = "append")
