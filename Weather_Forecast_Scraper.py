@@ -76,21 +76,21 @@ for i in zips:
         main_parse = json_normalize(ds['main'])
         main_nms = list(main_parse)
         for y in range(len(main_nms)):
-            main_nms[y] = 'main.' + main_nms[y]
+            main_nms[y] = 'main_' + main_nms[y]
         main_parse.columns = main_nms
         
         #'Weather' weather info
         weath_parse = json_normalize(ds['weather'])
         weath_nms = list(weath_parse)
         for y in range(len(weath_nms)):
-            weath_nms[y] = 'weath.' + weath_nms[y]
+            weath_nms[y] = 'weath_' + weath_nms[y]
         weath_parse.columns = weath_nms
         
         #Cloud weather info
         cld_parse = json_normalize(ds['clouds'])
         cld_nms = list(cld_parse)
         for y in range(len(cld_nms)):
-            cld_nms[y] = 'cld.' + cld_nms[y]
+            cld_nms[y] = 'cld_' + cld_nms[y]
         cld_parse.columns = cld_nms
         
         
@@ -98,7 +98,7 @@ for i in zips:
         wind_parse = json_normalize(ds['wind'])
         wind_nms = list(wind_parse)
         for y in range(len(wind_nms)):
-            wind_nms[y] = 'wind.' + wind_nms[y]
+            wind_nms[y] = 'wind_' + wind_nms[y]
         wind_parse.columns = wind_nms
         
         pr_chk = list(ds)
@@ -152,12 +152,12 @@ for i in zips:
 
         sn_nms = list(sn_weath)
         for a in range(len(sn_nms)):
-            sn_nms[a] = 'snow.' + sn_nms[a]
+            sn_nms[a] = 'snow_' + sn_nms[a]
         sn_weath.columns = sn_nms
     
         rn_nms = list(rn_weath)
         for j in range(len(rn_nms)):
-            rn_nms[j] = 'rain.' + rn_nms[j]
+            rn_nms[j] = 'rain_' + rn_nms[j]
         rn_weath.columns = rn_nms
     
         g_data = pd.concat([fore_tm, main_parse, weath_parse, cld_parse, wind_parse, sn_weath, rn_weath], axis = 1)
